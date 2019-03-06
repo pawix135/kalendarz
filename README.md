@@ -1,1 +1,1 @@
-TEST
+Wyswietlanie poprawnie eventow + dat jednoczesnie
