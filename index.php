@@ -29,9 +29,11 @@ require_once 'php/kalendarz.php';
 
 			th{
 				padding: 20px;
+				min-width: 100%;
 			}
 
 			td{
+				min-width: 100%;
 				padding: 15px;
 			}
 
@@ -64,8 +66,16 @@ require_once 'php/kalendarz.php';
 					<?php
 
 						$kalendarz = new Kalendarz();
-						$kalendarz->build_calendar($month,$year,[]);
+						// $kalendarz->build_calendar($month,$year,[]);
+
+						// $dates = $kalendarz->getCalendar($month, $year);
+						$t = $kalendarz->createCalendar(3, 2019);
+						var_dump($t);
+						var_dump($kalendarz->getCalendar(3, 2019));
 						echo "<br>";
+
+						// $kalendarz->createCalendar(3, 2019);
+
 					?>
 				</div>
 			</div><br>
