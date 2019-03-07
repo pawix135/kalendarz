@@ -32,6 +32,7 @@ if(!empty($_GET['year'])){
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
+          <base href="http://localhost/kalendarz/" target="_blank">
 					<?php echo createCalendar($month, $year);?>
 				</div>
 			</div><br>

@@ -56,10 +56,13 @@ function createCalendar($month,$year) {
 
   $dayOfWeek = $dateComponents['wday'];
 
-  $calendar = "<div style='overflow-x:auto;'>
-		<table class='table table-bordered'>";
-  $calendar .= "<caption>$monthName $year</caption>";
-  $calendar .= "<tr>";
+  $calendar =
+				"
+					<div style='overflow-x:auto;'>
+						<table class='table table-bordered'>
+							<caption>$monthName $year</caption>
+								<tr>
+				";
 
   foreach($daysOfWeek as $day) {
     $calendar .= "<th class='header'>$day</th>";
