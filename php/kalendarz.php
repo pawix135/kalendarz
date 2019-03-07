@@ -1,4 +1,20 @@
 <?php
+if(!empty($_GET['month']) && 1 <= $_GET['month'] && $_GET['month'] <= 12 ){
+
+	$month = $_GET['month'];
+}else{
+
+	$month = date('m');
+
+}
+if(!empty($_GET['year'])){
+
+	$year = $_GET['year'];
+}else{
+
+	$year = date('Y');
+}
+
 function createCalendar($month,$year) {
 
   require 'database.php';
@@ -58,10 +74,9 @@ function createCalendar($month,$year) {
 
   $calendar =
 				"
-					<div style='overflow-x:auto;'>
-						<table class='table table-bordered'>
-							<caption>$monthName $year</caption>
-								<tr>
+					<table class='table table-bordered' style='overflow-x:auto;'>
+						<caption>$monthName $year</caption>
+							<tr>
 				";
 
   foreach($daysOfWeek as $day) {
@@ -164,12 +179,12 @@ function createCalendar($month,$year) {
 
   $calendar .= "</tr>";
 
-  $calendar .= "</table></div>";
+  $calendar .= "</table>";
 
   $todaysDate = date($year.'-'.$month.'-1');
 
-  $calendar .= "<a class='btn btn-light' href='http://localhost/kalendarz/index.php?month=". (date('m', strtotime($todaysDate.' -1 month'))) ."&year=". (date('Y', strtotime($todaysDate.' -1 month'))) ."'>Poprzedni</a>";
-  $calendar .= "<a class='btn btn-light' href='http://localhost/kalendarz/index.php?month=". (date('m', strtotime($todaysDate.' +1 month'))) ."&year=". (date('Y', strtotime($todaysDate.' +1 month'))) ."'>Nastepny</a>";
+  $calendar .= "<a class='btn btn-light' href='http://localhost/kalendarz/" . basename($_SERVER["SCRIPT_FILENAME"]) . "?month=". (date('m', strtotime($todaysDate.' -1 month'))) ."&year=". (date('Y', strtotime($todaysDate.' -1 month'))) ."'>Poprzedni</a>";
+  $calendar .= "<a class='btn btn-light' href='http://localhost/kalendarz/" . basename($_SERVER["SCRIPT_FILENAME"]) . "?month=". (date('m', strtotime($todaysDate.' +1 month'))) ."&year=". (date('Y', strtotime($todaysDate.' +1 month'))) ."'>Nastepny</a>";
 
 
   return $calendar;

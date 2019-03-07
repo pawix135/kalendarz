@@ -1,20 +1,5 @@
 <?php
 require 'php/kalendarz.php';
-if(!empty($_GET['month']) && 1 <= $_GET['month'] && $_GET['month'] <= 12 ){
-
-	$month = $_GET['month'];
-}else{
-
-	$month = date('m');
-
-}
-if(!empty($_GET['year'])){
-
-	$year = $_GET['year'];
-}else{
-
-	$year = date('Y');
-}
 ?>
 
 <!doctype html>

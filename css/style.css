@@ -1,3 +1,70 @@
+html, body{
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.container-fluid{
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(140, 121, 122);
+}
+
+.full{
+  width: 100vw;
+  height: 100vh;
+}
+
+.btn-group-vertical{
+  width: 100%;
+}
+
+.navMenu{
+  padding: 0;
+  background-color: #3d4957;
+}
+
+.mB{
+  border-radius: 0 !important;
+  color: rgb(255, 255, 255);
+}
+
+.mB:hover{
+  color: rgb(198, 198, 198);
+}
+
+.mainBlock{
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.mainBlock .title{
+  background-color: rgb(255, 255, 255);
+  padding: 10px;
+}
+
+.mainBlock .body{
+  background-color: rgba(231, 231, 231, 0.5);
+  padding: 10px;
+}
+
+.hB{
+  background-color: #0B172D;
+}
+
+.eB{
+  background-color: #1E2A41;
+}
+
+.content{
+  background-color: #eef1f5;
+}
+
+.bold{
+  font-weight: bold;
+}
+
 ul{
   list-style-type: none;
 }
@@ -10,7 +77,6 @@ table{
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  width: 100%;
   font-size: 1.1em;
 }
 
@@ -25,29 +91,19 @@ td{
 }
 
 .day:hover{
-  transition: .5s;
-  background-color: rgba(88, 154, 208, 0.68);
-
+  background-color: rgb(215, 215, 215);
 }
 
 .dsb{
   pointer-events: none;
 }
 
-.event{
-  transition: .5s;
-  background-color: rgba(88, 154, 208, 0.68);
-}
-
-.event:hover{
-  background-color: rgba(35, 103, 159, 0.92);
-}
 
 .today{
-  background-color: rgba(250, 50, 50, 1);
+  background-color: rgb(215, 215, 215);
 }
 
 .today:hover{
   transition: .5s;
-  background-color: rgba(193, 30, 30, 1);
+  background-color: rgba(120, 120, 120, 1);
 }
