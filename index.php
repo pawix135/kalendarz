@@ -25,53 +25,8 @@ if(!empty($_GET['year'])){
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 		<link rel="stylesheet" href="http://localhost/kalendarz/css/jquery-ui.min.css">
 		<link rel="stylesheet" href="http://localhost/kalendarz/css/jquery-ui.multidatespicker.css">
+		<link rel="stylesheet" href="http://localhost/kalendarz/css/style.css">
 		<title>Kalendarz</title>
-		<style>
-			ul{
-				list-style-type: none;
-			}
-			table{
-				text-align: center;
-				-webkit-touch-callout: none;
-		    -webkit-user-select: none;
-	     	-khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-				width: 100%;
-				font-size: 1.1em;
-			}
-
-			th{
-				padding: 20px;
-				min-width: 100%;
-			}
-
-			td{
-				min-width: 100%;
-				padding: 15px;
-			}
-
-			.day:hover{
-				background-color: rgb(70, 99, 203);
-			}
-
-			.dsb{
-				pointer-events: none;
-			}
-
-			.event{
-				background-color: rgba(88, 154, 208, 0.68);
-			}
-			.today{
-				background-color: rgba(224, 35, 35, 0.68);
-			}
-
-			.today:hover{
-				background-color: rgba(193, 30, 30, 1);
-			}
-
-		</style>
 	</head>
 	<body>
 		<div class="container">

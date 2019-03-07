@@ -1,0 +1,53 @@
+ul{
+  list-style-type: none;
+}
+
+table{
+  text-align: center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 100%;
+  font-size: 1.1em;
+}
+
+th{
+  padding: 20px;
+  min-width: 100%;
+}
+
+td{
+  min-width: 100%;
+  padding: 15px;
+}
+
+.day:hover{
+  transition: .5s;
+  background-color: rgba(88, 154, 208, 0.68);
+
+}
+
+.dsb{
+  pointer-events: none;
+}
+
+.event{
+  transition: .5s;
+  background-color: rgba(88, 154, 208, 0.68);
+}
+
+.event:hover{
+  background-color: rgba(35, 103, 159, 0.92);
+}
+
+.today{
+  background-color: rgba(250, 50, 50, 1);
+}
+
+.today:hover{
+  transition: .5s;
+  background-color: rgba(193, 30, 30, 1);
+}

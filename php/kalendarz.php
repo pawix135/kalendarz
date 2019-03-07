@@ -4,6 +4,7 @@ function createCalendar($month,$year) {
   require 'database.php';
 
   $daysOfWeek = array('Nie','Pon','Wto','Sro','Czw','Ptk','Sob');
+  // $daysOfWeek = array('Pon','Wto','Sro','Czw','Ptk','Sob', 'Nie');
 
   $firstDayOfMonth = mktime(0,0,0,$month,1,$year);
 
@@ -55,7 +56,8 @@ function createCalendar($month,$year) {
 
   $dayOfWeek = $dateComponents['wday'];
 
-  $calendar = "<div style='overflow-x:auto;'><table class='table table-bordered'>";
+  $calendar = "<div style='overflow-x:auto;'>
+		<table class='table table-bordered'>";
   $calendar .= "<caption>$monthName $year</caption>";
   $calendar .= "<tr>";
 
@@ -68,7 +70,7 @@ function createCalendar($month,$year) {
   $calendar .= "</tr><tr>";
 
   if ($dayOfWeek > 0) {
-    $calendar .= "<td colspan='$dayOfWeek'>&nbsp;</td>";
+		$calendar .= "<td colspan='$dayOfWeek'>&nbsp;</td>";
   }
 
   $month = str_pad($month, 2, "0", STR_PAD_LEFT);
@@ -87,47 +89,63 @@ function createCalendar($month,$year) {
     $today = date('Y-m-d');
     $date = date('Y-m-d', strtotime("$year-$month-$currentDayRel"));
 
-    if($date){
+    $todayClass = 'today';
+		$dayClass = 'day';
 
-      $todayClass = '';
-			$dayClass = 'day';
+    if($date === $today){
 
-      if($date === $today){
-        $todayClass = 'today';
-      }
+			$getEventsToday = getToday($today);
 
-      $calendar .= "<td class='$dayClass $todayClass' rel='$date'>$currentDay";
-      $checkDatesql = "SELECT * FROM `daty` WHERE `data` = '$date'";
+			if(empty($getEventsToday) || !is_array($getEventsToday)){
 
-      if($resultCheck = $conn->query($checkDatesql)){
+				$calendar .= "<td class='day today' rel='$date'>$currentDay</td>";
 
-        if($resultCheck->num_rows < 1){
-          $calendar .= "</td>";
-        }
+			}else{
+				$events = '';
+				foreach ($getEventsToday as $key => $value) {
+					$events .= "<br><span>" . $getEventsToday[$key] . "</span>";
+				}
 
-        while ($rowCheck = $resultCheck->fetch_assoc()) {
+				$calendar .= "<td class='day today' rel='$date'>$currentDay $events</td>";
 
-          $eventId = $rowCheck['id_wydarzenia'];
-          $getEventsql = "SELECT * FROM `wydarzenia` WHERE `id` = '$eventId'";
+			}
 
-          if($resultEvent = $conn->query($getEventsql)){
 
-            while($rowEvent = $resultEvent->fetch_assoc()){
+    }else{
 
-              $eventName = $rowEvent['nazwa_wydarzenia'];
+			$calendar .= "<td class='$dayClass' rel='$date'>$currentDay";
+	    $checkDatesql = "SELECT * FROM `daty` WHERE `data` = '$date'";
 
-              $calendar .= "<br><span>$eventName</span>";
-            }
+	    if($resultCheck = $conn->query($checkDatesql)){
 
-          }
+	      if($resultCheck->num_rows < 1){
+	        $calendar .= "</td>";
+	      }
 
-        }
+	      while ($rowCheck = $resultCheck->fetch_assoc()) {
 
-      }
+	        $eventId = $rowCheck['id_wydarzenia'];
+	        $getEventsql = "SELECT * FROM `wydarzenia` WHERE `id` = '$eventId'";
 
-      $calendar .= "</td>";
+	        if($resultEvent = $conn->query($getEventsql)){
 
-    }
+	          while($rowEvent = $resultEvent->fetch_assoc()){
+
+	            $eventName = $rowEvent['nazwa_wydarzenia'];
+
+	            $calendar .= "<br><span>$eventName</span>";
+
+						}
+
+	        }
+
+	      }
+
+	    }
+
+	    $calendar .= "</td>";
+
+		}
 
     $currentDay++;
     $dayOfWeek++;
@@ -153,4 +171,40 @@ function createCalendar($month,$year) {
 
   return $calendar;
 
+}
+
+function getToday($date){
+
+	require 'database.php';
+	$date = date('Y-m-d', strtotime($date));
+	$day = date('j', strtotime($date));
+	$r = '';
+
+	$checkDatesql = "SELECT * FROM `daty` WHERE `data` = '$date'";
+	if($resultCheck = $conn->query($checkDatesql)){
+
+		if($resultCheck->num_rows < 1){
+			return "<td class='day today' rel='$date'>$day</td>";
+		}
+		$r = [];
+		while ($rowCheck = $resultCheck->fetch_assoc()) {
+
+			$eventId = $rowCheck['id_wydarzenia'];
+			$getEventsql = "SELECT * FROM `wydarzenia` WHERE `id` = '$eventId'";
+
+			if($resultEvent = $conn->query($getEventsql)){
+
+				while($rowEvent = $resultEvent->fetch_assoc()){
+					$r[] = $rowEvent['nazwa_wydarzenia'];
+					$eventName = $rowEvent['nazwa_wydarzenia'];
+
+				}
+
+			}
+
+		}
+
+		return $r;
+
+	}
 }
