@@ -1,301 +1,156 @@
 <?php
+function createCalendar($month,$year) {
+
+  require 'database.php';
+
+  $daysOfWeek = array('Nie','Pon','Wto','Sro','Czw','Ptk','Sob');
+
+  $firstDayOfMonth = mktime(0,0,0,$month,1,$year);
+
+  $numberDays = date('t',$firstDayOfMonth);
+
+  $dateComponents = getdate($firstDayOfMonth);
 
-if(!empty($_GET['month']) && 1 <= $_GET['month'] && $_GET['month'] <= 12 ){
-
-	$month = $_GET['month'];
-}else{
-
-	$month = date('m');
-
-}
-if(!empty($_GET['year'])){
-
-	$year = $_GET['year'];
-}else{
-
-	$year = date('Y');
-}
-
-class Kalendarz{
-
-	function __construct(){
-	}
-
-	public function conn(){
-		require 'database.php';
-		$conn = new mysqli ('localhost', 'root', '', 'kalendarz');
-		return $conn;
-	}
-
-	public function build_calendar($month,$year,$dateArray) {
-
-		//Zwraca unixowy czas
-		$firstDayOfMonth = mktime(0,0,0,$month,1,$year); //godzina, minuta, sekunda, miesiac, dzien, rok
-
-		//Zwraca ilosc dni w miesiacu
-		$numberDays = date('t',$firstDayOfMonth); //format, data
-
-		//Zwraca tablice z informacjami
-		$dateComponents = getdate($firstDayOfMonth); //info o pierwszym dniu miesiaca
-
-		//Zwraca nazwę miesiaca po angielsku
-		$monthName = $dateComponents['month']; //Nazwa miesiaca
-
-		//Kalendarz
-		$calendar = "<div style='overflow-x:auto;'><table class='calendar table table-bordered'>";
-		switch ($monthName) {
-			case 'January':
-				$monthName = "Styczeń";
-				break;
-			case 'February':
-				$monthName = "Luty";
-				break;
-			case 'March':
-				$monthName = "Marzec";
-				break;
-			case 'April':
-				$monthName = "Kwiecień";
-				break;
-			case 'May':
-				$monthName = "Maj";
-				break;
-			case 'June':
-				$monthName = "Czerwiec";
-				break;
-			case 'July':
-				$monthName = "Lipiec";
-				break;
-			case 'August':
-				$monthName = "Sierpień";
-				break;
-			case 'September':
-				$monthName = "Wrzesień";
-				break;
-			case 'October':
-				$monthName = "Październik";
-				break;
-			case 'November':
-				$monthName = "Listopad";
-				break;
-			case 'December':
-				$monthName = "Grudzień";
-				break;
-			default:
-				break;
-		}
-		$calendar .= "<thead><tr>
-										<th>Ni</th>
-										<th>Po</th>
-										<th>Wt</th>
-										<th>Śr</th>
-										<th>Cz</th>
-										<th>Pt</th>
-										<th>So</th>
-									</tr></thead>";
-		$calendar .= "<caption>$monthName $year</caption>";
-		$calendar .= "<tr>";
+  $monthName = $dateComponents['month'];
+  switch ($monthName) {
+    case 'January':
+      $monthName = "Styczeń";
+      break;
+    case 'February':
+      $monthName = "Luty";
+      break;
+    case 'March':
+      $monthName = "Marzec";
+      break;
+    case 'April':
+      $monthName = "Kwiecień";
+      break;
+    case 'May':
+      $monthName = "Maj";
+      break;
+    case 'June':
+      $monthName = "Czerwiec";
+      break;
+    case 'July':
+      $monthName = "Lipiec";
+      break;
+    case 'August':
+      $monthName = "Sierpień";
+      break;
+    case 'September':
+      $monthName = "Wrzesień";
+      break;
+    case 'October':
+      $monthName = "Październik";
+      break;
+    case 'November':
+      $monthName = "Listopad";
+      break;
+    case 'December':
+      $monthName = "Grudzień";
+      break;
+    default:
+      break;
+  }
 
-		//Zwraca 0-6
-		$dayOfWeek = $dateComponents['wday']; //Dzien tygodnia
+  $dayOfWeek = $dateComponents['wday'];
 
-		//Dzien tygodnia
-		$currentDay = 1;
+  $calendar = "<div style='overflow-x:auto;'><table class='table table-bordered'>";
+  $calendar .= "<caption>$monthName $year</caption>";
+  $calendar .= "<tr>";
 
-		$calendar .= "</tr><tr>";
+  foreach($daysOfWeek as $day) {
+    $calendar .= "<th class='header'>$day</th>";
+  }
 
-		//Umieszczenie daty w dobrym dniu tygodina(table)
-		if ($dayOfWeek > 0) {
-			$calendar .= "<td colspan='$dayOfWeek' class='dsb'>&nbsp;</td>";
-		}
+  $currentDay = 1;
 
-		$month = str_pad($month, 2, "0", STR_PAD_LEFT); //Dodaje 0 na poczatek po lewej stronie
+  $calendar .= "</tr><tr>";
 
-		while ($currentDay <= $numberDays) {
+  if ($dayOfWeek > 0) {
+    $calendar .= "<td colspan='$dayOfWeek'>&nbsp;</td>";
+  }
 
-			$table = array();
+  $month = str_pad($month, 2, "0", STR_PAD_LEFT);
 
-			//Jesli "koniec" dni w tygodniu to stworz nowy tr
-			if ($dayOfWeek == 7) {
-				$dayOfWeek = 0;
-				$calendar .= "</tr><tr>";
-			}
+  while ($currentDay <= $numberDays) {
 
-			$currentDayRel = str_pad($currentDay, 2, "0", STR_PAD_LEFT); //Dodaje zera przed dzien
+    if($dayOfWeek == 7) {
 
-			$date = "$year-$month-$currentDayRel"; //Nowa data
+      $dayOfWeek = 0;
+      $calendar .= "</tr><tr>";
 
-			// $events = $this->getEventByDate($date);
-			$today = date('Y-m-d'); //Dzisiejszy dzien
+    }
 
+    $currentDayRel = str_pad($currentDay, 2, "0", STR_PAD_LEFT);
 
-			$table = array($date => [
-				'DayOfWeek' => $dayOfWeek
-				]);
-			// print_r($table); echo "<br>";
+    $today = date('Y-m-d');
+    $date = date('Y-m-d', strtotime("$year-$month-$currentDayRel"));
 
-			$currentDay++;
-			$dayOfWeek++;
+    if($date){
 
-		}
-		//Umieszczenie dat w dobrych miejscach na koncu
-		if ($dayOfWeek != 7) {
+      $todayClass = '';
+			$dayClass = 'day';
 
-			$remainingDays = 7 - $dayOfWeek;
-			$calendar .= "<td colspan='$remainingDays' class='dsb'>&nbsp;</td>";
+      if($date === $today){
+        $todayClass = 'today';
+      }
 
-		}
+      $calendar .= "<td class='$dayClass $todayClass' rel='$date'>$currentDay";
+      $checkDatesql = "SELECT * FROM `daty` WHERE `data` = '$date'";
 
-		$calendar .= "</tr></table></div>";
+      if($resultCheck = $conn->query($checkDatesql)){
 
-		$todaysDate = date($year.'-'.$month.'-1');
+        if($resultCheck->num_rows < 1){
+          $calendar .= "</td>";
+        }
 
-		$calendar .= "<a class='btn btn-light' href='http://localhost/kalendarz/index.php?month=". (date('m', strtotime($todaysDate.' -1 month'))) ."&year=". (date('Y', strtotime($todaysDate.' -1 month'))) ."'>Poprzedni</a>";
-		$calendar .= "<a class='btn btn-light' href='http://localhost/kalendarz/index.php?month=". (date('m', strtotime($todaysDate.' +1 month'))) ."&year=". (date('Y', strtotime($todaysDate.' +1 month'))) ."'>Nastepny</a>";
+        while ($rowCheck = $resultCheck->fetch_assoc()) {
 
-		echo $calendar;
+          $eventId = $rowCheck['id_wydarzenia'];
+          $getEventsql = "SELECT * FROM `wydarzenia` WHERE `id` = '$eventId'";
 
-	}
+          if($resultEvent = $conn->query($getEventsql)){
 
-	//Nie tykac
-	public function getEventByDate($date){
+            while($rowEvent = $resultEvent->fetch_assoc()){
 
-		$conn = $this->conn();
+              $eventName = $rowEvent['nazwa_wydarzenia'];
 
-		$Datessql = "SELECT * FROM `daty` WHERE `data` = '$date'";
+              $calendar .= "<br><span>$eventName</span>";
+            }
 
-		if($result = $conn->query($Datessql)){
+          }
 
-			if($result->num_rows < 1){
-				return;
-			}
+        }
 
-			while($row = $result->fetch_assoc()) {
-				// print_r($row); echo "<br>";
-			}
+      }
 
+      $calendar .= "</td>";
 
-		}
+    }
 
-	}
+    $currentDay++;
+    $dayOfWeek++;
 
-	//Nie tykac
-	public function getDateByDate($date){
+  }
 
-		$conn = $this->conn();
-		$sql = "SELECT * FROM `daty` WHERE `data` = '$date'";
-		$res = [];
+  if($dayOfWeek != 7) {
 
-		if($result = $conn->query($sql)){
+    $remainingDays = 7 - $dayOfWeek;
+    $calendar .= "<td colspan='$remainingDays'>&nbsp;</td>";
 
-			if($result->num_rows < 1){
-				return;
-			}
+  }
 
-			while ($row = $result->fetch_assoc()) {
-				$res[] = $row;
+  $calendar .= "</tr>";
 
-			}
-		}
-		$conn->close();
-		return $res[0];
+  $calendar .= "</table></div>";
 
-	}
+  $todaysDate = date($year.'-'.$month.'-1');
 
-	//Nie tykac
-	public function getCalendar($month, $year){
+  $calendar .= "<a class='btn btn-light' href='http://localhost/kalendarz/index.php?month=". (date('m', strtotime($todaysDate.' -1 month'))) ."&year=". (date('Y', strtotime($todaysDate.' -1 month'))) ."'>Poprzedni</a>";
+  $calendar .= "<a class='btn btn-light' href='http://localhost/kalendarz/index.php?month=". (date('m', strtotime($todaysDate.' +1 month'))) ."&year=". (date('Y', strtotime($todaysDate.' +1 month'))) ."'>Nastepny</a>";
 
-		//DB
-		$conn = $this->conn();
 
-		//Zwraca unixowy czas
-		$firstDayOfMonth = mktime(0,0,0,$month,1,$year); //godzina, minuta, sekunda, miesiac, dzien, rok
-
-		//Zwraca ilosc dni w miesiacu
-		$numberDays = date('t',$firstDayOfMonth); //format, data
-
-		//Zwraca tablice z informacjami
-		$dateComponents = getdate($firstDayOfMonth); //info o pierwszym dniu miesiaca
-
-		//Zwraca nazwę miesiaca po angielsku
-		$monthName = $dateComponents['month']; //Nazwa miesiaca
-
-		//Zwraca 0-6
-		$dayOfWeek = $dateComponents['wday']; //Dzien tygodnia
-
-		//Dzien tygodnia
-		$currentDay = 1;
-
-		$month = str_pad($month, 2, "0", STR_PAD_LEFT); //Dodaje 0 na poczatek po lewej stronie
-
-		$table = [];
-
-		while ($currentDay <= $numberDays) {
-
-			//Jesli "koniec" dni w tygodniu to stworz nowy tr
-			if ($dayOfWeek == 7) {
-				$dayOfWeek = 0;
-			}
-
-			$currentDayRel = str_pad($currentDay, 2, "0", STR_PAD_LEFT); //Dodaje zera przed dzien
-
-			$date = "$year-$month-$currentDayRel"; //Nowa data
-
-			// $events = $this->getEventByDate($date);
-			$today = date('Y-m-d'); //Dzisiejszy dzien
-
-			$events = $this->getEvents($date);
-
-			$names = [];
-			foreach ($events as $key => $value) {
-
-				$result = $conn->query("SELECT * FROM `wydarzenia` WHERE `id` = '$value'");
-				$rows = array_unique($result->fetch_assoc());
-				array_push($names, $rows['nazwa_wydarzenia']);
-
-			}
-
-			// print_r($table); echo "<br>";
-			array_push($table, [
-				"date"=>$date,
-				"dayOfWeek"=>$dayOfWeek,
-				"events"=> $names
-			]);
-
-			$currentDay++;
-			$dayOfWeek++;
-
-		}
-
-		return $table;
-
-	}
-
-	//Nie tykac
-	public function getEvents($date){
-
-		$conn = $this->conn();
-		$sql = "SELECT * FROM `daty` WHERE `data` = '$date'";
-		$result = $conn->query($sql);
-
-		while($row = $result->fetch_assoc()) {
-			$ids[] = $row['id_wydarzenia'];
-		}
-
-		$events = [];
-		foreach ($ids as $key => $value) {
-			array_push($events, $value);
-		}
-
-		return $events;
-	}
-
-	//Nowe, nie tykac
-	public function createCalendar($month, $year){
-		require 'tableTmp.php';
-
-		//Kalendarz
-		$fullCalendar = $this->getCalendar($month, $year);
-
-	}
+  return $calendar;
 
 }

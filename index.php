@@ -1,7 +1,22 @@
 <?php
-require_once 'php/kalendarz.php';
+require 'php/kalendarz.php';
+if(!empty($_GET['month']) && 1 <= $_GET['month'] && $_GET['month'] <= 12 ){
 
+	$month = $_GET['month'];
+}else{
+
+	$month = date('m');
+
+}
+if(!empty($_GET['year'])){
+
+	$year = $_GET['year'];
+}else{
+
+	$year = date('Y');
+}
 ?>
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -59,24 +74,10 @@ require_once 'php/kalendarz.php';
 		</style>
 	</head>
 	<body>
-
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
-					<?php
-
-						$kalendarz = new Kalendarz();
-						// $kalendarz->build_calendar($month,$year,[]);
-
-						// $dates = $kalendarz->getCalendar($month, $year);
-						$t = $kalendarz->createCalendar(3, 2019);
-						var_dump($t);
-						var_dump($kalendarz->getCalendar(3, 2019));
-						echo "<br>";
-
-						// $kalendarz->createCalendar(3, 2019);
-
-					?>
+					<?php echo createCalendar($month, $year);?>
 				</div>
 			</div><br>
 			<div class="row">
