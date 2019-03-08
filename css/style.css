@@ -6,24 +6,23 @@ html, body{
 }
 
 .container-fluid{
-  width: 100vw;
+  /* width: 100vw; */
   height: 100vh;
   background-color: rgb(140, 121, 122);
 }
 
 .full{
-  width: 100vw;
   height: 100vh;
 }
 
-.btn-group-vertical{
-  width: 100%;
-}
+/* Menu */
 
 .navMenu{
   padding: 0;
   background-color: #3d4957;
 }
+
+/* Przyciski */
 
 .mB{
   border-radius: 0 !important;
@@ -34,35 +33,53 @@ html, body{
   color: rgb(198, 198, 198);
 }
 
-.mainBlock{
-  padding: 10px;
-  margin-top: 10px;
-}
-
-.mainBlock .title{
-  background-color: rgb(255, 255, 255);
-  padding: 10px;
-}
-
-.mainBlock .body{
-  background-color: rgba(231, 231, 231, 0.5);
-  padding: 10px;
-}
-
 .hB{
   background-color: #0B172D;
 }
 
 .eB{
-  background-color: #1E2A41;
+  background-color: #0B172D;
 }
+
+.loB{
+  background-color: #0B172D;
+}
+
+/* Bloki */
+
+.mainBlock{
+  padding: 10px;
+  margin-top: 10px;
+}
+
+/* Bloki > tytul */
+.mainBlock .title{
+  background-color: rgb(255, 255, 255);
+  padding: 10px;
+}
+
+.mainBlock .title span{
+  font-weight: bold;
+}
+
+/* Bloki > body */
+.mainBlock .body{
+  background-color: rgba(231, 231, 231, 0.5);
+  padding: 10px;
+}
+
+/* Glowne bloki */
+.calendarBlock{
+  /* display: none; */
+}
+
+.editBlock{
+  /* display: none; */
+}
+
 
 .content{
   background-color: #eef1f5;
-}
-
-.bold{
-  font-weight: bold;
 }
 
 ul{
@@ -106,4 +123,10 @@ td{
 .today:hover{
   transition: .5s;
   background-color: rgba(120, 120, 120, 1);
+}
+
+@media only screen and (min-width: 768px) {
+  .navMenu{
+
+  }
 }

@@ -183,11 +183,14 @@ function createCalendar($month,$year) {
 
   $todaysDate = date($year.'-'.$month.'-1');
 
-  $calendar .= "<a class='btn btn-light' href='http://localhost/kalendarz/" . basename($_SERVER["SCRIPT_FILENAME"]) . "?month=". (date('m', strtotime($todaysDate.' -1 month'))) ."&year=". (date('Y', strtotime($todaysDate.' -1 month'))) ."'>Poprzedni</a>";
-  $calendar .= "<a class='btn btn-light' href='http://localhost/kalendarz/" . basename($_SERVER["SCRIPT_FILENAME"]) . "?month=". (date('m', strtotime($todaysDate.' +1 month'))) ."&year=". (date('Y', strtotime($todaysDate.' +1 month'))) ."'>Nastepny</a>";
+  // $calendar .= "<a class='btn btn-light prevMonth' data-month='' data-year='' href='http://localhost/kalendarz/" . basename($_SERVER["SCRIPT_FILENAME"]) . "?month=". (date('m', strtotime($todaysDate.' -1 month'))) ."&year=". (date('Y', strtotime($todaysDate.' -1 month'))) ."'>Poprzedni</a>";
+  // $calendar .= "<a class='btn btn-light nextMonth' data-month='' data-year='' href='http://localhost/kalendarz/" . basename($_SERVER["SCRIPT_FILENAME"]) . "?month=". (date('m', strtotime($todaysDate.' +1 month'))) ."&year=". (date('Y', strtotime($todaysDate.' +1 month'))) ."'>Nastepny</a>";
 
 
-  return $calendar;
+  $calendar .= "<a class='btn btn-light prevMonth' data-month='" . (date('m', strtotime($todaysDate.' -1 month'))) . "' data-year='". (date('Y', strtotime($todaysDate.' -1 month'))) . "' href='#'>Poprzedni</a>";
+  $calendar .= "<a class='btn btn-light nextMonth' data-month='" . (date('m', strtotime($todaysDate.' +1 month'))) . "' data-year='". (date('Y', strtotime($todaysDate.' +1 month'))) . "' href='#'>Nastepny</a>";
+
+  echo $calendar;
 
 }
 
@@ -225,4 +228,10 @@ function getToday($date){
 		return $r;
 
 	}
+}
+
+// createCalendar($month, $year);
+
+if(!empty($_GET['table']) && $_GET['table'] === "getTable"){
+  createCalendar($month, $year);
 }
